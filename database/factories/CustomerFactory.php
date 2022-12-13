@@ -2,10 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CustomerFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Customer::class;
+
+
     /**
      * Define the model's default state.
      *
@@ -13,8 +22,20 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
+        // to separate Individaul name from Company name
+        $type = $this->faker->randomElement(['I', 'B']);
+        $name = $type == 'I' ? $this->faker->name() : $this->faker->company();
+
         return [
-            //
+            'name' => $name,
+            'type' => $type,
+            'email' => $this->faker->email(),
+            'address' => $this->faker->streetAddress(),
+            'city' => $this->faker->city(),
+            'state' => $this->faker->state(),
+            'country' => $this->faker->country(),
+            'postal_code' => $this->faker->postCode(),
+
         ];
     }
 }

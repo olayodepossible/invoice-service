@@ -18,8 +18,10 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->string('type');  // Individual or Business
             $table->string('email');
+            $table->string('address');
             $table->string('city');
             $table->string('state');
+            $table->string('country');
             $table->string('postal_code');
             $table->timestamps();
         });

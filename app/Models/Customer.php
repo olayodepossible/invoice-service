@@ -11,7 +11,8 @@ class Customer extends Model
 
     //declaring relationship (One -> Many)
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 }
