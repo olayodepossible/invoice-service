@@ -9,6 +9,17 @@ class Customer extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+            'name' ,
+            'type',
+            'email',
+            'address',
+            'city' ,
+            'state' ,
+            'country' ,
+            'postalCode',
+
+        ];
     //declaring relationship (One -> Many)
 
     public function invoices()

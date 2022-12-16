@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Customer;
+
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+
+use App\Http\Resources\V1\CustomerCollection;
+use App\Http\Resources\V1\CustomerResource;
+use App\Services\Filters\V1\CustomersFilter;
 
 class CustomerController extends Controller
 {
@@ -14,9 +20,17 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Customer::all();
+        $filter = new CustomersFilter();
+        $filterItems = $filter->transform($request); // returns [['column', 'sql-operator', 'value']]
+        $includeInvoices = $request->query('includeInvoices');
+        $customers = Customer::where($filterItems);
+        if ($includeInvoices) {
+            $customers = $customers->with('invoices'); 
+        }
+        return new CustomerCollection($customers->paginate()->appends($request->query()));
+        // return new CustomerCollection(Customer::all());
     }
 
     /**
@@ -37,7 +51,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        return new CustomerResource(Customer::create($request->all()));
     }
 
     /**
@@ -48,7 +62,11 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return $customer;
+        $includeInvoices = request()->query('includeInvoices');
+        if ($includeInvoices) {
+            return new CustomerResource($customer->loadMissing('invoices'));
+        }
+        return new CustomerResource($customer);
     }
 
     /**
