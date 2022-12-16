@@ -27,7 +27,7 @@ class CustomerController extends Controller
         $includeInvoices = $request->query('includeInvoices');
         $customers = Customer::where($filterItems);
         if ($includeInvoices) {
-            $customers = $customers->with('invoices'); 
+            $customers = $customers->with('invoices');
         }
         return new CustomerCollection($customers->paginate()->appends($request->query()));
         // return new CustomerCollection(Customer::all());
@@ -70,17 +70,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCustomerRequest  $request
@@ -89,7 +78,7 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $customer->update($request->all());
     }
 
     /**

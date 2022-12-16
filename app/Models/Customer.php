@@ -17,7 +17,7 @@ class Customer extends Model
             'city' ,
             'state' ,
             'country' ,
-            'postalCode',
+            'postal_code',
 
         ];
     //declaring relationship (One -> Many)
